@@ -4,7 +4,6 @@ const api = axios.create({
     baseURL:"http://localhost:4000/api"
 });
 
-// Request Interceptor
 api.interceptors.request.use(
     (config) => {
         const accessToken = localStorage.getItem('access_token');
@@ -18,7 +17,7 @@ api.interceptors.request.use(
     }
 );
 
-// Response Interceptor
+
 api.interceptors.response.use(
     (response) => {
         return response;
@@ -41,11 +40,8 @@ api.interceptors.response.use(
                     if (response.status === 200) {
                         const newAccessToken = response.data.accessToken;
                         localStorage.setItem('access_token', newAccessToken);
-
                         api.defaults.headers.common['authorization'] = `${newAccessToken}`;
-
                         originalRequest.headers['authorization'] = `${newAccessToken}`;
-
                         return api(originalRequest);
                     }
                 } catch (refreshError) {
